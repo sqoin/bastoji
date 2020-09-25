@@ -1190,10 +1190,16 @@ bool IsInitialBlockDownload()
         return true;
     if (chainActive.Tip() == NULL)
         return true;
-    if (chainActive.Tip()->nChainWork < UintToArith256(chainParams.GetConsensus().nMinimumChainWork))
+    if (chainActive.Tip()->nChainWork < UintToArith256(chainParams.GetConsensus().nMinimumChainWork)) {
+        LogPrintf("less then minumum here");
         return true;
-    if (chainActive.Tip()->GetBlockTime() < (GetTime() - nMaxTipAge))
+    }
+        
+    if (chainActive.Tip()->GetBlockTime() < (GetTime() - nMaxTipAge)) {
+        LogPrintf("less then max tip age");
         return true;
+    }
+        
     latchToFalse.store(true, std::memory_order_relaxed);
     return false;
 }
